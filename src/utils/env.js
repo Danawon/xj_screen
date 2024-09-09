@@ -6,12 +6,12 @@
  * imgBaseUrl: 图片所在域名地址
  *
  */
-let baseUrl = 'https://devapi.hansifit.com/api/';
+let baseUrl = 'https://api.hansifit.com/api/';
 
 if (process.env.NODE_ENV == 'development') {
-    baseUrl = 'https://devapi.hansifit.com/api/';
+    baseUrl = 'https://api.hansifit.com/api/';
 } else if (process.env.NODE_ENV == 'production') {
-    baseUrl = window.location.protocol + '//'+ window.location.hostname + '/api/';
+    baseUrl = 'https://api.hansifit.com/api/';
 }
 export {
     baseUrl,

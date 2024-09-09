@@ -6,10 +6,9 @@ import Home from '@/views/home/index'
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', redirect: '/login' },
-    { path: '/index', component: Home, meta: { title: '首页' } },
+    { path: '/', component: Home, meta: { title: '首页' } },
     { path: '/login', component: Login, meta: { title: '登录' } },
-    { path: '*', redirect: '/index' },
+    { path: '*', redirect: '/' }
 ];
 
 const router = new VueRouter({
@@ -25,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
     if (token && token.length) {
       next()
     } else {
-      next('/')
+      next('/login')
     }
   }
 })
