@@ -98,8 +98,8 @@
             </div>
             <div class="dataItem">
               <img src="@/assets/Img/icon_time.png" />
-              运动打卡每周人均次数:
-              <b>{{ statistics.weekSportAvgCount }}</b>
+              运动打卡上周达标人数:
+              <b>{{ statistics.weekSportNumber }}</b>
             </div>
           </div>
           <!-- 效果数据 -->
@@ -210,6 +210,7 @@ export default {
       weatherInterval: null,
       totalInterval: null,
       tabInterval: null,
+      toolTipInterval: null,
       time: null,
       weather: {}
     }
@@ -257,6 +258,7 @@ export default {
     this.weatherInterval && clearInterval(this.weatherInterval);
     this.tabInterval && clearInterval(this.tabInterval);
     this.rightListInterval && clearInterval(this.rightListInterval);
+    this.toolTipInterval && clearInterval(this.toolTipInterval);
   },
   methods: {
     // 右侧门店切换
@@ -270,7 +272,7 @@ export default {
       this.getRightList(params)
       this.rightListInterval = setInterval(() => {
         this.getRightList()
-      }, 20000)
+      }, 10000)
     },
     // 获取社区医院运动干预效果数据
     getRightList(params = {}) {
@@ -358,7 +360,16 @@ export default {
           right: 0,
           bottom: 34,
         },
-        tooltip: { trigger: 'axis' },
+        tooltip: { 
+          trigger: 'axis',
+          triggerOn: 'click',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          borderWidth: 0,
+          textStyle: {
+            color: '#000',
+            fontWeight: 'bold'
+          }
+        },
         xAxis: {
           data: [],
           axisTick: { show: false },
@@ -407,6 +418,21 @@ export default {
       })
       option.series = series
       this.chart.setOption(option)
+      // 鼠标悬浮
+      let xIndex = 0
+      this.chart.getZr().on('click', (params) => {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (this.chart.containPixel('grid', pointInPixel)) {
+          this.toolTipInterval && clearInterval(this.toolTipInterval);
+          this.toolTipInterval = 0
+          let pointInGrid = this.chart.convertFromPixel({ seriesIndex: 0 }, pointInPixel);
+          xIndex = pointInGrid[0];
+        }
+      });
+      // 鼠标移开
+      this.chart.on('globalout', () => {
+        this.toolTipInterval === 0 && this.toolTipLoop(xIndex)
+      });
     },
     // 数据变化重绘折线图
     drawLineChart() {
@@ -423,6 +449,26 @@ export default {
         })
       })
       this.chart.setOption(option)
+      this.toolTipInterval === null && this.toolTipLoop(0)
+    },
+    // 图标提示框循环
+    toolTipLoop(dataIndex) {
+      this.chart.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        dataIndex
+      });
+      const dataLen = this.lineChartsData.months.length
+      dataIndex = dataIndex == dataLen - 1 ? 0 : dataIndex + 1
+      this.toolTipInterval = setInterval(() => {
+        this.chart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex
+        });
+        dataIndex++
+        if(dataIndex >= dataLen) dataIndex = 0
+      }, 5000)
     }
   }
 }
