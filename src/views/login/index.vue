@@ -43,18 +43,24 @@
         <img src="../../assets/Img/zhuji_icon.png" alt="">
       </li>
     </ul>
+    <!-- 备案号 -->
+     <p class="recordNumber" v-html="recordNumber" />
   </div>
 </template>
 
 <script>
-import { login } from '@/api';
+import { login, getConfig } from '@/api';
 export default {
   data () {
     return {
       passwordType: true,
       loading: false,
+      recordNumber: '',
       formData: {}
     }
+  },
+  created() {
+    this.getRecord()
   },
   mounted () {
    // 监听回车事件
@@ -69,6 +75,12 @@ export default {
     window.removeEventListener('keyup', () => {});
   },
   methods: {
+    // 获取备案号
+    getRecord() {
+      getConfig().then(res => {
+        this.recordNumber = res.filing
+      })
+    },
     // 登录
     submitForm() {
       if(!this.formData.account || !this.formData.password) {
@@ -89,7 +101,7 @@ export default {
 .page {
   width: 100%;
   height: 100vh;
-  background: url('../../assets/Img/login_bg.png') center no-repeat;
+  background: url('../../assets/Img/login_bg.png') bottom no-repeat;
   background-size: cover;
   position: fixed;
   & > img {
@@ -197,6 +209,16 @@ ul {
   }
   li:nth-child(6){
     top: 80px;
+  }
+}
+.recordNumber {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 2%;
+  /deep/ a {
+    color: #fff;
+    text-decoration: none;
   }
 }
 </style>

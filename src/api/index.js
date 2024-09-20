@@ -68,3 +68,11 @@ export function getWeather() {
         method: 'get'
     });
 }
+
+// 获取备案号
+export function getConfig() {
+    return request({
+        url: 'visual/config',
+        method: 'get'
+    });
+}
