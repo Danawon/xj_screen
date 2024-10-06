@@ -150,7 +150,7 @@
           <div class="box-bg" style="height: 840px;">
             <div class="listTitle">
               <div class="up" @click="changeData('up')" />
-              {{ hospital.store_name }}
+              <a :href="`#/home/summary?id=${hospital.store_id}`" target="_blank">{{ hospital.store_name }}</a>
               <div class="down" @click="changeData('down')" />
             </div>
             <div class="listItem" v-for="item, k in hpField" :key="k">
@@ -756,6 +756,9 @@ export default {
   letter-spacing: 2px;
   margin: -3px 0 10px 0;
   position: relative;
+  .up, .down, a {
+    cursor: pointer;
+  }
   .up, .down {
     position: absolute;
     height: 100%;
@@ -763,7 +766,6 @@ export default {
     top: 0;
     margin: auto;
     width: 50px;
-    cursor: pointer;
   }
   .down {
     right: 0;

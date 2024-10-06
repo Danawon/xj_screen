@@ -1,24 +1,5 @@
 import request from '@/utils/request';
 
-// 获取脑波个人报告详细
-// export function getbrainwaveReport(query) {
-//     return request({
-//         url: '/main/brainwaveReport/getReport',
-//         method: 'get',
-//         params: query
-//     });
-// }
-
-// 脑波pdf地址添加
-// export function importReportPdf(query, custom) {
-//     return request({
-//         url: '/main/brainwaveReport/importReportPdf',
-//         method: 'get',
-//         params: query,
-//         custom
-//     });
-// }
-
 // 用户登录
 export function login(data) {
     return request({
