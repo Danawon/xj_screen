@@ -34,6 +34,7 @@
             <el-table 
                 :data="tableData"
                 border
+                stripe
                 :header-cell-style="{backgroundColor: '#f5f7fa', color: '#000'}"
                 height="calc(100vh - 314px)"
             >

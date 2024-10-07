@@ -20,21 +20,26 @@
                     :value="k"
                 />
             </el-select>
-            <el-button type="primary" icon="el-icon-search" @click="getPage">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="getPage()">搜索</el-button>
         </div>
         <!-- 表格数据 -->
         <el-table 
             v-loading="loading"
             :data="pageData"
             border
+            stripe
             :header-cell-style="{backgroundColor: '#f5f7fa', color: '#000'}"
             height="calc(100vh - 130px)"
+            @sort-change="handlesortchange"
         >
-            <el-table-column type="index" align="center" label="排序" width="80"/>
+            <el-table-column sortable align="center" label="排序" width="80">
+                <template slot-scope="scope">
+                    {{ scope.$index + 1 }}
+                </template>
+            </el-table-column>
             <el-table-column prop="nickname" align="center" label="患者名称"/>
             <el-table-column prop="mobile" align="center" label="患者电话"/>
-            <el-table-column prop="number" label="数量" align="center" />
-            <el-table-column prop="store_name" align="center" label="单位"/>
+            <el-table-column prop="number" :label="typeName||'类型'" align="center" />
             <el-table-column prop="name" align="center" label="管理医生"/>
         </el-table>
     </div>
@@ -75,6 +80,7 @@
                     }
                 }]
             },
+            typeName: '',
             typeList: [],
             pageData: [],
         }
@@ -86,13 +92,22 @@
         })
     },
     methods: {
+        // 排序
+        handlesortchange({ order }) {
+            let asc = order === "ascending" ? 'asc' : 'desc'
+            this.getPage(asc)
+        },
         // 获取页面数据
-        async getPage() {
+        async getPage(order = 'asc') {
+            if(this.type == null) return
+            const _type = this.typeList[this.type]
+            this.typeName = _type.name + '（'+_type.unit+'）'
             this.loading = true
             this.pageData = await getHospitalRank({
                 store_id: this.$route.query.id,
                 wheretime: this.dateValue ? this.dateValue.join(',') : '',
-                type: this.typeList[this.type].value
+                type: _type.value,
+                order
             })
             setTimeout(() => {
                 this.loading = false

@@ -78,6 +78,7 @@ export default {
     // 获取备案号
     getRecord() {
       getConfig().then(res => {
+        localStorage.setItem('screenTitle', res.title)
         this.recordNumber = res.filing
       })
     },
