@@ -79,10 +79,10 @@
                 }, {
                     text: '最近一个月',
                     onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        picker.$emit('pick', [start, end]);
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = now.getMonth();
+                        picker.$emit('pick', [new Date(year, month - 1, 1), new Date(year, month, 0)]);
                     }
                 }, {
                     text: '最近三个月',
@@ -91,6 +91,15 @@
                         const start = new Date();
                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
                         picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: '最近一年',
+                    onClick(picker) {
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = now.getMonth();
+                        const day = now.getDate();
+                        picker.$emit('pick', [new Date(year-1, month, day), new Date(year, month, day)]);
                     }
                 }]
             },
@@ -116,8 +125,9 @@
     created() {
         getDoctorList().then(res => {
             this.doctorList = res
+            this.doctorId = res[0].id
+            this.getPage()
         })
-        this.getPage()
     },
     methods: {
         // 获取页面数据

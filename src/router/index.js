@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
   if (whiteList.includes(to.path)) {
     next()
   } else {
-    const token = localStorage.getItem('screenToken')
+    const token = sessionStorage.getItem('screenToken')
     if (token && token.length) {
       next()
     } else {

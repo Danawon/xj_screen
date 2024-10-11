@@ -44,7 +44,7 @@
                 {name: '体脂下降人均重量', field: 'averageBodyFatReductionPerPerson', unit: 'KG'},
                 {name: 'BMI下降总人数', field: 'totalBMIDecrease', unit: '人'},
                 {name: 'BMI人数下降占比', field: 'BMIReductionPercentage', unit: '%'},
-                {name: 'BMI下降人均数值', field: 'averageBMIDecreasePerPerson', unit: '㎡/kg'},
+                {name: 'BMI下降人均数值', field: 'averageBMIDecreasePerPerson', unit: 'kg/m²'},
                 {name: '四高指标下降总人数', field: 'totalPeopleWithFourHighsReduction', unit: '人'},
                 {name: '四高指标下降人数占比', field: 'percentageOfPeopleImprovedCardioEndurance', unit: '%'},
                 {name: '心肺耐力值提升人数', field: 'numberOfPeopleImprovedCardioEndurance', unit: '人'},

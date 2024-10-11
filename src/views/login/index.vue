@@ -89,7 +89,8 @@ export default {
         return
       }
       login(this.formData).then(res => {
-        localStorage.setItem('screenToken', res.token)
+        localStorage.setItem('screenView', res.is_view_data)
+        sessionStorage.setItem('screenToken', res.token)
         this.$router.push('/')
       })
     }

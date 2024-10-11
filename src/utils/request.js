@@ -12,7 +12,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('screenToken');
+    const token = sessionStorage.getItem('screenToken');
     if(token) {
       config.headers['token'] = token
     }
@@ -35,6 +35,7 @@ service.interceptors.response.use(
             closeOnClickModal: false
           }).then(() => {
             localStorage.clear()
+            sessionStorage.clear()
             location.reload()
           })
         } else {

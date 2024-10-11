@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
-import { Form, FormItem, Input, Button, Icon, Progress, Message, MenuItem, Menu, DatePicker, Loading, Select, Option, Table, TableColumn } from 'element-ui';
+import { Form, FormItem, Input, Button, Icon, Progress, Message, MenuItem, Menu, DatePicker, Loading, Select, Option, Table, TableColumn, Pagination} from 'element-ui';
 import './assets/css/index.less';
 
 Vue.config.productionTip = false;
@@ -19,6 +19,7 @@ Vue.use(Select);
 Vue.use(Option);
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Pagination);
 Vue.prototype.$message = Message;
 
 new Vue({

@@ -150,7 +150,7 @@
           <div class="box-bg" style="height: 840px;">
             <div class="listTitle">
               <div class="up" @click="changeData('up')" />
-              <a :href="`#/home/summary?id=${hospital.store_id}`" target="_blank">{{ hospital.store_name }}</a>
+              <span @click="toViewDetail(hospital.store_id)">{{ hospital.store_name }}</span>
               <div class="down" @click="changeData('down')" />
             </div>
             <div class="listItem" v-for="item, k in hpField" :key="k">
@@ -469,6 +469,15 @@ export default {
         dataIndex++
         if(dataIndex >= dataLen) dataIndex = 0
       }, 5000)
+    },
+    // 跳转详情页面
+    toViewDetail(id) {
+      const screenView = localStorage.getItem('screenView')
+      if(!screenView) return
+      this.$router.push({
+        path: '/home/summary', 
+        query: { id }
+      })
     }
   }
 }
@@ -756,7 +765,7 @@ export default {
   letter-spacing: 2px;
   margin: -3px 0 10px 0;
   position: relative;
-  .up, .down, a {
+  .up, .down, span {
     cursor: pointer;
   }
   .up, .down {

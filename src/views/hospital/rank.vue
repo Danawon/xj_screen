@@ -25,11 +25,11 @@
         <!-- 表格数据 -->
         <el-table 
             v-loading="loading"
-            :data="pageData"
+            :data="pageResult.data"
             border
             stripe
             :header-cell-style="{backgroundColor: '#f5f7fa', color: '#000'}"
-            height="calc(100vh - 130px)"
+            height="calc(100vh - 172px)"
             @sort-change="handlesortchange"
         >
             <el-table-column sortable align="center" label="排序" width="80">
@@ -42,6 +42,16 @@
             <el-table-column prop="number" :label="typeName||'类型'" align="center" />
             <el-table-column prop="name" align="center" label="管理医生"/>
         </el-table>
+        <!-- 分页 -->
+        <el-pagination
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="refreshPageRequest"
+            :current-page="pageRequest.page"
+            :page-sizes="[10, 20, 50, 100, 200, 500, 1000]"
+            :page-size="pageRequest.list_rows"
+            :total="pageResult.total"
+        />
     </div>
 </template>
   
@@ -51,7 +61,7 @@
     data () {
         return {
             dateValue: '',
-            type: null,
+            type: 0,
             loading: false,
             pickerOptions: {
                 shortcuts: [{
@@ -65,10 +75,10 @@
                 }, {
                     text: '最近一个月',
                     onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        picker.$emit('pick', [start, end]);
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = now.getMonth();
+                        picker.$emit('pick', [new Date(year, month - 1, 1), new Date(year, month, 0)]);
                     }
                 }, {
                     text: '最近三个月',
@@ -78,37 +88,59 @@
                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
                         picker.$emit('pick', [start, end]);
                     }
+                }, {
+                    text: '最近一年',
+                    onClick(picker) {
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = now.getMonth();
+                        const day = now.getDate();
+                        picker.$emit('pick', [new Date(year-1, month, day), new Date(year, month, day)]);
+                    }
                 }]
             },
             typeName: '',
             typeList: [],
-            pageData: [],
+            pageRequest: {
+                order: 'asc',
+                store_id: this.$route.query.id,
+                page: 1,
+                list_rows: 20
+            },
+            pageResult: {}
         }
     },
    created() {
         // 获取所有类型
         getTypeList().then(res => {
             this.typeList = res
+            this.getPage()
         })
     },
     methods: {
         // 排序
         handlesortchange({ order }) {
-            let asc = order === "ascending" ? 'asc' : 'desc'
-            this.getPage(asc)
+            this.pageRequest.order = order === "ascending" ? 'asc' : 'desc'
+            this.getPage()
+        },
+        // 每页展示条数修改
+        handleSizeChange(size) {
+            this.pageRequest.list_rows = size
+            this.getPage()
+        },
+        // 翻页
+        refreshPageRequest(page) {
+            this.pageRequest.page = page
+            this.getPage()
         },
         // 获取页面数据
-        async getPage(order = 'asc') {
-            if(this.type == null) return
+        async getPage() {
             const _type = this.typeList[this.type]
             this.typeName = _type.name + '（'+_type.unit+'）'
             this.loading = true
-            this.pageData = await getHospitalRank({
-                store_id: this.$route.query.id,
-                wheretime: this.dateValue ? this.dateValue.join(',') : '',
-                type: _type.value,
-                order
-            })
+            this.pageRequest.wheretime = this.dateValue ? this.dateValue.join(',') : ''
+            this.pageRequest.type = _type.value
+            this.pageResult = await getHospitalRank(this.pageRequest)
             setTimeout(() => {
                 this.loading = false
             }, 200)
@@ -118,4 +150,9 @@
 </script>
 
 <style lang='less' scoped>
+.el-pagination {
+    margin-top: 10px;
+    width: fit-content;
+    margin-left: auto;
+}
 </style>
