@@ -473,7 +473,7 @@ export default {
     // 跳转详情页面
     toViewDetail(id) {
       const screenView = localStorage.getItem('screenView')
-      if(!screenView) return
+      if(!screenView || screenView == 'false') return
       this.$router.push({
         path: '/home/summary', 
         query: { id }
