@@ -51,9 +51,10 @@ export function getWeather() {
 }
 
 // 获取备案号
-export function getConfig() {
+export function getConfig(params) {
     return request({
         url: 'visual/config',
-        method: 'get'
+        method: 'get',
+        params
     });
 }

@@ -77,7 +77,8 @@ export default {
   methods: {
     // 获取备案号
     getRecord() {
-      getConfig().then(res => {
+      const domain = window.location.hostname
+      getConfig({ domain }).then(res => {
         localStorage.setItem('screenTitle', res.title)
         this.recordNumber = res.filing
       })
