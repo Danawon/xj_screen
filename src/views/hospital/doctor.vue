@@ -38,11 +38,16 @@
                 :header-cell-style="{backgroundColor: '#f5f7fa', color: '#000'}"
                 height="calc(100vh - 314px)"
             >
-                <el-table-column prop="name" align="center" label="患者名称" />
-                <el-table-column prop="phone" label="电话" align="center" />
+                <el-table-column prop="name" align="center" label="患者名称" min-width="100" />
+                <el-table-column prop="phone" label="电话" align="center" min-width="100" />
                 <el-table-column align="center" label="体适能">
                     <template slot-scope="scope">
                         {{ scope.row.bodytest ? '完成' : '未完成' }}
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="体适能复评">
+                    <template slot-scope="scope">
+                        {{ scope.row.review_bodytest ? '完成' : '未完成' }}
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="心肺耐力">
@@ -50,9 +55,19 @@
                         {{ scope.row.ergometry_cycle ? '完成' : '未完成' }}
                     </template>
                 </el-table-column>
+                <el-table-column align="center" label="心肺耐力复评" min-width="100">
+                    <template slot-scope="scope">
+                        {{ scope.row.review_ergometry_cycle ? '完成' : '未完成' }}
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="医疗数据">
                     <template slot-scope="scope">
                         {{ scope.row.edicaltest ? '完成' : '未完成' }}
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" label="医疗数据复评" min-width="100">
+                    <template slot-scope="scope">
+                        {{ scope.row.review_edicaltest ? '完成' : '未完成' }}
                     </template>
                 </el-table-column>
             </el-table>
@@ -125,9 +140,8 @@
     created() {
         getDoctorList().then(res => {
             this.doctorList = res
-            this.doctorId = res[0].id
-            this.getPage()
         })
+        this.getPage()
     },
     methods: {
         // 获取页面数据
