@@ -120,7 +120,7 @@
                 <img src="@/assets/Img/icon_data_two.png" />
                 <div>
                   <i>BMI下降总人数：{{ effect.totalBodyFatDecrease }}{{ effect.totalBodyFatDecrease != '---' ? '人' : '' }}</i>
-                  <div>人均下降<p>{{ effect.averageBodyFatReductionPerPerson }}</p>㎡/kg</div>
+                  <div>人均下降<p>{{ effect.averageBodyFatReductionPerPerson }}</p>kg/㎡</div>
                 </div>
               </div>
             </div>
@@ -198,7 +198,7 @@ export default {
         {name: 'averageBodyFatReductionPerPerson', text: '体脂下降人均重量', unit: 'kg'},
         {name: 'totalBMIDecrease', text: 'BMI下降总人数', unit: '人'},
         {name: 'BMIReductionPercentage', text: 'BMI人数下降占比', unit: '%'},
-        {name: 'averageBMIDecreasePerPerson', text: 'BMI下降人均数值', unit: '㎡/kg'},
+        {name: 'averageBMIDecreasePerPerson', text: 'BMI下降人均数值', unit: 'kg/㎡'},
         {name: 'totalPeopleWithFourHighsReduction', text: '四高指标下降总人数', unit: '人'},
         {name: 'percentageOfPeopleImprovedCardioEndurance', text: '四高指标下降人数占比', unit: '%'},
       ],
